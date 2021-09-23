@@ -8,6 +8,7 @@ print(type(host_sys_info))
 OS_ID = str(host_sys_info).replace("Distributor ID: ",'')
 print(OS_ID)
 if OS_ID == "Raspbian":
+    print("I'm raspi")
     from picamera.array import PiRGBArray # Generates a 3D RGB array
     from picamera import PiCamera # Provides a Python interface for the RPi Camera Module
     import time # Provides time-related functions
