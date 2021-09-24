@@ -14,12 +14,12 @@ print(distro_ID)
 # -------------------- Import dependencies -----------------------------#
 # For the raspberry pi env, the picamera lib is use to display the result from camera
 
-if not OS_ID_LINE:
-    if distro_ID == "Raspbian":
-        print("I'm raspi")
-        from picamera.array import PiRGBArray # Generates a 3D RGB array
-        from picamera import PiCamera # Provides a Python interface for the RPi Camera Module
-        import time # Provides time-related functions
+
+if distro_ID == "Raspbian":
+    print("I'm raspi")
+    from picamera.array import PiRGBArray # Generates a 3D RGB array
+    from picamera import PiCamera # Provides a Python interface for the RPi Camera Module
+    import time # Provides time-related functions
 
 import cv2 as cv
 
@@ -62,7 +62,7 @@ def open_cam():
     cv.destroyAllWindows()
 
 if __name__ == "__main__":
-    if distro_ID == "Raspbian":
-        open_cam_in_rasp()
-    else:
-        open_cam()
+    # if distro_ID == "Raspbian":
+    #     open_cam_in_rasp()
+    # else:
+    open_cam()
