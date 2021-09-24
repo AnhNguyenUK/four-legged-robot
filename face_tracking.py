@@ -1,17 +1,25 @@
-import os
-# import re
+import subprocess
+import re
 
-# pattern = "[^Distributor ID.*:].*$"
-host_sys_info = os.system('lsb_release -a')
-print(type(host_sys_info))
-# OS_ID = re.findall(pattern,str(host_sys_info))
-OS_ID = str(host_sys_info).replace("Distributor ID: ",'')
-print(OS_ID)
-if OS_ID == "Raspbian":
-    print("I'm raspi")
-    from picamera.array import PiRGBArray # Generates a 3D RGB array
-    from picamera import PiCamera # Provides a Python interface for the RPi Camera Module
-    import time # Provides time-related functions
+# Get the Distro ID of the current Linux system, use to distinguish between host (developer env) and target (raspberry)
+
+distro_id_line_pattern = "Distributor ID:.+?(?=n)."
+process = subprocess.Popen(["lsb_release","-a"],stdin=subprocess.PIPE,stdout=subprocess.PIPE)
+host_sys_info = process.communicate()
+OS_ID_LINE = re.findall(distro_id_line_pattern,str(host_sys_info[0]))
+distro_ID = OS_ID_LINE[0].replace("Distributor ID:\\t",'')
+distro_ID = distro_ID.replace("\\n",'')
+print(distro_ID)
+
+# -------------------- Import dependencies -----------------------------#
+# For the raspberry pi env, the picamera lib is use to display the result from camera
+
+if not OS_ID_LINE:
+    if distro_ID == "Raspbian":
+        print("I'm raspi")
+        from picamera.array import PiRGBArray # Generates a 3D RGB array
+        from picamera import PiCamera # Provides a Python interface for the RPi Camera Module
+        import time # Provides time-related functions
 
 import cv2 as cv
 
@@ -54,7 +62,7 @@ def open_cam():
     cv.destroyAllWindows()
 
 if __name__ == "__main__":
-    if OS_ID.replace(' ','') == "Raspbian":
+    if distro_ID == "Raspbian":
         open_cam_in_rasp()
     else:
         open_cam()
