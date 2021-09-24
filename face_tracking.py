@@ -33,10 +33,10 @@ def open_cam_in_rasp():
         image = frame.array
      
         # Display the frame using OpenCV
-        cv2.imshow("Frame", image)
+        cv.imshow("Frame", image)
      
         # Wait for keyPress for 1 millisecond
-        key = cv2.waitKey(1) & 0xFF
+        key = cv.waitKey(1) & 0xFF
      
         # Clear the stream in preparation for the next frame
         raw_capture.truncate(0)
