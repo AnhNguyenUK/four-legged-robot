@@ -62,7 +62,7 @@ def open_cam():
     cv.destroyAllWindows()
 
 if __name__ == "__main__":
-    # if distro_ID == "Raspbian":
-    #     open_cam_in_rasp()
-    # else:
-    open_cam()
+    if distro_ID == "Raspbian":
+        open_cam_in_rasp()
+    else:
+        open_cam()
