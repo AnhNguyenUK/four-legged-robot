@@ -15,7 +15,6 @@ if distro_ID == "Raspbian":
     from Led import *
 
 
-
 class PowerMonitor:
 
         def __init__(self):
@@ -23,12 +22,14 @@ class PowerMonitor:
             self.normalThreshold = 7
             self.warningThreshold = 6.5
             self.cutOffThreshold = 6
-            self.currentStatus = 0
             if distro_ID == "Raspbian":
-                self.battery_status = { "POWEROFF":Color(255, 0, 0), # RED
+                self.battery_status = { "INIT": Color(0, 0, 0),
+                                        "POWEROFF":Color(255, 0, 0), # RED
                                         "WARNING":Color(240, 165, 0), # YELLOW
-                                        "NORMAL":color(0, 255, 0)}   # GREEN
+                                        "NORMAL":Color(0, 255, 0)}   # GREEN
+                self.currentStatus = self.battery_status["INIT"]
             else:
+                self.currentStatus = 0
                 self.battery_status = {"POWEROFF": "RED",  # RED
                                        "WARNING": "YELLOW",  # YELLOW
                                        "NORMAL": "GREEN"}  # GREEN
@@ -61,12 +62,13 @@ class PowerMonitor:
         def display_status_led(self):
             while True:
                 self.get_battery_infor()
+                led=Led()
                 if distro_ID == "Raspbian":
                     if self.currentStatus != 0:
-                        led=Led()
                         led.colorWipe(led.strip, self.currentStatus)
                 else:
                     print("LED status: ", self.currentStatus)
+                led.colorWipe(led.strip,self.battery_status["INIT"])
                 time.sleep(power_monitor.notification_delay)
 
 
