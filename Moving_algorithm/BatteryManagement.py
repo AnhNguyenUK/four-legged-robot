@@ -27,7 +27,7 @@ class PowerMonitor:
             if distro_ID == "Raspbian":
                 self.battery_status = { "POWEROFF":Color(255, 0, 0), # RED
                                         "WARNING":Color(240, 165, 0), # YELLOW
-                                        "NORMAL":COLOR(0, 255, 0)}   # GREEN
+                                        "NORMAL":color(0, 255, 0)}   # GREEN
             else:
                 self.battery_status = {"POWEROFF": "RED",  # RED
                                        "WARNING": "YELLOW",  # YELLOW
