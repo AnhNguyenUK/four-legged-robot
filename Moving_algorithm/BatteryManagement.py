@@ -47,17 +47,17 @@ class PowerMonitor:
                 power = float(input("Input some dummy code for testing: "))
             if power >= self.normalThreshold:
                 self.currentStatus = self.battery_status["NORMAL"]
-                print("Battery is in normal state")
+                print("Battery is in normal state: ", str(power))
             elif (power >= self.warningThreshold) and (power < self.normalThreshold):
                 self.currentStatus = self.battery_status["WARNING"]
-                print("Battery is in warning state")
+                print("Battery is in warning state: ", str(power))
             elif (power >= self.cutOffThreshold) and (power < self.warningThreshold):
                 self.currentStatus = self.battery_status["POWEROFF"]
-                print("Battery is in poweroff state")
+                print("Battery is in poweroff state: ", str(power))
             else:
                 self.currentStatus = 0
                 self.currentStatus = self.battery_status["POWEROFF"]
-                print("Battery is in undefined state")
+                print("Battery is in undefined state: ", str(power))
 
         def display_status_led(self):
             while True:
