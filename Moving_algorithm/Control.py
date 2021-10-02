@@ -106,10 +106,10 @@ class Control:
                     self.angle[i+2][1]=self.restriction(90+self.angle[i+2][1]+self.calibration_angle[i+2][1],0,180)
                     self.angle[i+2][2]=self.restriction(180-(self.angle[i+2][2]+self.calibration_angle[i+2][2]),0,180)
                 for i in range(2):
-                    self.servo.setServoAngle(4+i*3,self.angle[i][0])
+                    # self.servo.setServoAngle(4+i*3,self.angle[i][0])
                     self.servo.setServoAngle(3+i*3,self.angle[i][1])
                     self.servo.setServoAngle(2+i*3,self.angle[i][2])
-                    self.servo.setServoAngle(8+i*3,self.angle[i+2][0])
+                    # self.servo.setServoAngle(8+i*3,self.angle[i+2][0])
                     self.servo.setServoAngle(9+i*3,self.angle[i+2][1])
                     self.servo.setServoAngle(10+i*3,self.angle[i+2][2])
             except Exception as e:
