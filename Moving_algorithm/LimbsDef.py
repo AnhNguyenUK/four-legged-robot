@@ -34,13 +34,6 @@ if distro_ID == "Raspbian":
 class RobotDogFreeNove:
     def __init__(self) -> None:
         self.ACTION = [
-            'FORWARD',
-            'BACKWARD',
-            'TURNRIGHT',
-            'TURNLEFT',
-            'CALIBRATION',
-            'CRAWLING',
-            'FOLLOW'
         ]
         self.stability = [
             'UNSTABLE',
@@ -51,7 +44,14 @@ class RobotDogFreeNove:
             'MOVING':1,
             'STANDING':2,
             'SITTING':3,
-            'FALLDOWN':4
+            'CRAWLING':4,
+            'FALLDOWN':5,
+            'FORWARD':6,
+            'BACKWARD':7,
+            'TURNRIGHT':8,
+            'TURNLEFT':9,
+            'CALIBRATION':10,
+            'FOLLOW':11
         }
         self.hipJoint   = [4, 7, 8, 11]
         self.femurJoint = [2, 5, 10, 13]
@@ -72,12 +72,12 @@ class RobotDogFreeNove:
             HipSetupAngle   = 20
             FemurSetupAngle = 0
             TibiaSetupAngle = 50
-            self.currentState = self.ACTION['STANDING']    
+            self.currentState = self.STATE['STANDING']    
         if action == "SITTING":
             HipSetupAngle   = 0
             FemurSetupAngle = 0
             TibiaSetupAngle = 0
-            self.currentState = self.ACTION['SITTING']
+            self.currentState = self.STATE['SITTING']
 
         self.current_position["HIP"]        = self.hipMovementAngularVector
         self.current_position["FEMUR"]      = self.femureMovementAngularVector
@@ -160,20 +160,20 @@ class RobotDogFreeNove:
     def doAction(self, robot, action):
         if self.STATE[action] not in self.restrictMovement(self.currentState):
             return "Invalid action"
-        if action == self.ACTION["SITTING"]:
+        if self.STATE[action] == self.STATE["SITTING"]:
             self.readyToAction("SITTING")
             self.activateLeg(robot)
-        if action == self.ACTION["STANDING"]:
+        if self.STATE[action] == self.STATE["STANDING"]:
             self.readyToAction("STANDING")
             self.activateLeg(robot)
 
 
     def restrictMovement(self, action):
         # To restrict the movement of robot and avoid damages
-        if action == self.ACTION['SITTING']:
-            return [self.ACTION['STANDING'], self.ACTION['CRAWLING']]
-        if action == self.ACTION['STANDING']:
-            return [self.ACTION['MOVING'], self.ACTION['SITTING']]                
+        if action == self.STATE['SITTING']:
+            return [self.STATE['STANDING'], self.STATE['CRAWLING']]
+        if action == self.STATE['STANDING']:
+            return [self.STATE['MOVING'], self.STATE['SITTING']]                
 
 class RobotLeg2Joint(RobotDogFreeNove):
 
