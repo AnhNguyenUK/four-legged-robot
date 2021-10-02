@@ -135,13 +135,14 @@ class RobotDogFreeNove:
                     
                 print("Femur Angle {}: ".format(str(index)), self.current_position["FEMUR"][index])
             time.sleep(0.01)
+
     def controlTibiaServo(self, pilot):
-        for index in range(4):        
+        while(True):
+            for index in range(4):        
                 if(index >= 2):
                     minimum_dis = -self.minimuDisplacement
                 else:
-                    minimum_dis = self.minimuDisplacement
-                
+                    minimum_dis = self.minimuDisplacement            
                 
                 if (self.current_position["TIBIA"][index] != self.tibiaMovementAngularVector[index]):
                     self.current_position["TIBIA"][index] -= minimum_dis
