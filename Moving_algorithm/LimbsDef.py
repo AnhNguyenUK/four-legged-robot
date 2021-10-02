@@ -163,11 +163,13 @@ class RobotDogFreeNove:
         threadForFemur  = threading.Thread(target=lambda pilot = robot  :self.controlFemurServo(pilot))
         threadForTibia  = threading.Thread(target=lambda pilot = robot  :self.controlTibiaServo(pilot))
         threadForHip.start()
-        threadForTibia.start()
-        threadForFemur.start()
-        time.sleep(5)
+        time.sleep(1)
         stop_thread(threadForHip)
+        threadForTibia.start()
+        time.sleep(1)
         stop_thread(threadForFemur)
+        threadForFemur.start()
+        time.sleep(1)
         stop_thread(threadForTibia)
         
             
