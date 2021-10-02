@@ -20,24 +20,22 @@ def _async_raise(tid, exctype):
 def stop_thread(thread):
     for i in range(5):
         _async_raise(thread.ident, SystemExit)
- 
- 
-def test():
-    while True:
-        print('-------')
-        time.sleep(1)
 
-def test1():
+def test(params):
     while True:
-        print('ahahahha')
-        time.sleep(0.5)
- 
+        print(params)
+        time.sleep(0.1)
+
+
 if __name__ == "__main__":
-    t = threading.Thread(target=test)
-    t1 = threading.Thread(target=test1)
+    t = threading.Thread(target = lambda x="Hello":test(x) )
+    t1 = threading.Thread(target = lambda x="I am Quoc Anh":test(x))
+    t2 = threading.Thread(target = lambda x="Thread demo":test(x))
     t.start()
     t1.start()
-    time.sleep(5)
+    t2.start()
+    time.sleep(1)
     print("main thread sleep finish")
     stop_thread(t)
     stop_thread(t1)
+    stop_thread(t2)
