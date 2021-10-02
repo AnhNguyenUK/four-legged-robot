@@ -5,7 +5,7 @@ import threading
 import time
 import subprocess
 from Thread import *
-
+from Control import *
 # Note: the SErvo at the righthip is broken, dont use the algorithm with hip servos
 
 
@@ -158,11 +158,9 @@ class RobotDogFreeNove:
             print("Tibia Angle {}: ".format(str(index)), self.current_position["TIBIA"][index])
 
     def activateLeg(self, robot):
-        while(True):
+        for i in range(60):
             femur = self.controlFemurServo(robot)
             tibia = self.controlTibiaServo(robot)
-            if (femur == "Done" and tibia == "Done"):
-                break
         
             
     def doAction(self, robot, action):
@@ -207,4 +205,6 @@ if __name__ == "__main__":
     print("Lukas is standing")
     robot.doAction(pilot, "SITTING")
     print("Lukas is sitting")
+    c = Control()
+    c.run()
     pass
