@@ -6,6 +6,9 @@ import time
 import subprocess
 from Thread import *
 
+# Note: the SErvo at the righthip is broken, dont use the algorithm with hip servos
+
+
 distro_id_line_pattern = "Distributor ID:.+?(?=n)."
 process = subprocess.Popen(["lsb_release", "-a"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 host_sys_info = process.communicate()
@@ -69,20 +72,20 @@ class RobotDogFreeNove:
 
     def readyToAction(self, action):
         if action == 'STANDING':
-            HipSetupAngle   = 20
-            FemurSetupAngle = 0
-            TibiaSetupAngle = 50
+            # HipSetupAngle   = 20
+            FemurSetupAngle = -20
+            TibiaSetupAngle = 0
             self.currentState = self.STATE['STANDING']    
         if action == "SITTING":
-            HipSetupAngle   = 0
+            # HipSetupAngle   = 0
             FemurSetupAngle = 0
-            TibiaSetupAngle = 0
+            TibiaSetupAngle = 50
             self.currentState = self.STATE['SITTING']
 
-        self.current_position["HIP"]        = self.hipMovementAngularVector
+        # self.current_position["HIP"]        = self.hipMovementAngularVector
         self.current_position["FEMUR"]      = self.femureMovementAngularVector
         self.current_position["TIBIA"]      = self.tibiaMovementAngularVector
-        self.hipMovementAngularVector       = [90-HipSetupAngle, 90-HipSetupAngle, 90+HipSetupAngle, 90+HipSetupAngle]
+        # self.hipMovementAngularVector       = [90-HipSetupAngle, 90-HipSetupAngle, 90+HipSetupAngle, 90+HipSetupAngle]
         self.femureMovementAngularVector    = [90-FemurSetupAngle, 90-FemurSetupAngle, 90+FemurSetupAngle, 90+FemurSetupAngle]
         self.tibiaMovementAngularVector     = [90-TibiaSetupAngle, 90-TibiaSetupAngle, 90+TibiaSetupAngle, 90+TibiaSetupAngle]
 
@@ -92,85 +95,75 @@ class RobotDogFreeNove:
     def getState(self):
         return self.currentState
 
-    def controlHipServo(self, pilot):
-        while(True):
-            for index in range(4):        
-                if(index >= 2):
-                    minimum_dis = -self.minimuDisplacement
-                else:
-                    minimum_dis = self.minimuDisplacement
+    # def controlHipServo(self, pilot):
+    #     for index in range(4):        
+    #         if(index >= 2):
+    #             minimum_dis = -self.minimuDisplacement
+    #         else:
+    #             minimum_dis = self.minimuDisplacement
                 
                 
-                if (self.current_position["HIP"][index] != self.hipMovementAngularVector[index]):
-                    self.current_position["HIP"][index] -= minimum_dis
-                # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
-                #     self.current_position["HIP"][index] += minimum_dis
-                else:    
-                    self.current_position["HIP"][index] = self.hipMovementAngularVector[index]
+    #         if (self.current_position["HIP"][index] != self.hipMovementAngularVector[index]):
+    #             self.current_position["HIP"][index] -= minimum_dis
+    #         # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
+    #         #     self.current_position["HIP"][index] += minimum_dis
+    #         else:    
+    #             self.current_position["HIP"][index] = self.hipMovementAngularVector[index]
 
-                if distro_ID == "Raspbian":
-                    pilot.setServoAngle(self.hipJoint[index], 
-                                        self.current_position["HIP"][index])
+    #         if distro_ID == "Raspbian":
+    #             pilot.setServoAngle(self.hipJoint[index], 
+    #                                 self.current_position["HIP"][index])
                     
-                print("Hip Angle {}: ".format(str(index)), self.current_position["HIP"][index])
-            time.sleep(0.01)
+    #         print("Hip Angle {}: ".format(str(index)), self.current_position["HIP"][index])
                     
     def controlFemurServo(self,pilot):
-        while(True):
-            for index in range(4):        
-                if(index >= 2):
-                    minimum_dis = -self.minimuDisplacement
-                else:
-                    minimum_dis = self.minimuDisplacement  
-                
-                if (self.current_position["FEMUR"][index] != self.femureMovementAngularVector[index]):
-                    self.current_position["FEMUR"][index] -= minimum_dis
+        for index in range(4):        
+            if(index >= 2):
+                minimum_dis = -self.minimuDisplacement
+            else:
+                minimum_dis = self.minimuDisplacement  
+            
+            if (self.current_position["FEMUR"][index] != self.femureMovementAngularVector[index]):
+                self.current_position["FEMUR"][index] -= minimum_dis
 
-                else:    
-                    self.current_position["FEMUR"][index] = self.femureMovementAngularVector[index]
+            else:    
+                self.current_position["FEMUR"][index] = self.femureMovementAngularVector[index]
+                return "Done"
 
-                if distro_ID == "Raspbian":
-                    pilot.setServoAngle(self.femurJoint[index], 
-                                        self.current_position["FEMUR"][index])
+            if distro_ID == "Raspbian":
+                pilot.setServoAngle(self.femurJoint[index], 
+                                    self.current_position["FEMUR"][index])
                     
-                print("Femur Angle {}: ".format(str(index)), self.current_position["FEMUR"][index])
-            time.sleep(0.01)
+            print("Femur Angle {}: ".format(str(index)), self.current_position["FEMUR"][index])
+            
 
     def controlTibiaServo(self, pilot):
-        while(True):
-            for index in range(4):        
-                if(index >= 2):
-                    minimum_dis = -self.minimuDisplacement
-                else:
-                    minimum_dis = self.minimuDisplacement            
+        for index in range(4):        
+            if(index >= 2):
+                minimum_dis = -self.minimuDisplacement
+            else:
+                minimum_dis = self.minimuDisplacement            
                 
-                if (self.current_position["TIBIA"][index] != self.tibiaMovementAngularVector[index]):
-                    self.current_position["TIBIA"][index] -= minimum_dis
-                # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
-                #     self.current_position["HIP"][index] += minimum_dis
-                else:    
-                    self.current_position["TIBIA"][index] = self.tibiaMovementAngularVector[index]
+            if (self.current_position["TIBIA"][index] != self.tibiaMovementAngularVector[index]):
+                self.current_position["TIBIA"][index] -= minimum_dis
+            # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
+            #     self.current_position["HIP"][index] += minimum_dis
+            else:    
+                self.current_position["TIBIA"][index] = self.tibiaMovementAngularVector[index]
+                return "Done"
 
-                if distro_ID == "Raspbian":
-                    pilot.setServoAngle(self.tibiaJoint[index], 
-                                        self.current_position["TIBIA"][index])
+            if distro_ID == "Raspbian":
+                pilot.setServoAngle(self.tibiaJoint[index], 
+                                    self.current_position["TIBIA"][index])
                     
-                print("Tibia Angle {}: ".format(str(index)), self.current_position["TIBIA"][index])
-            time.sleep(0.01)
+            print("Tibia Angle {}: ".format(str(index)), self.current_position["TIBIA"][index])
 
     def activateLeg(self, robot):
-        threadForHip    = threading.Thread(target=lambda pilot = robot  :self.controlHipServo(pilot))
-        threadForFemur  = threading.Thread(target=lambda pilot = robot  :self.controlFemurServo(pilot))
-        threadForTibia  = threading.Thread(target=lambda pilot = robot  :self.controlTibiaServo(pilot))
-        threadForHip.start()
-        time.sleep(1)
-        stop_thread(threadForHip)
-        threadForTibia.start()
-        time.sleep(1)
-        stop_thread(threadForFemur)
-        threadForFemur.start()
-        time.sleep(1)
-        stop_thread(threadForTibia)
+        while(True):
+            femur = self.controlFemurServo(robot)
+            tibia = self.controlTibiaServo(robot)
+            if (femur == "Done" and tibia == "Done"):
+                break
         
             
     def doAction(self, robot, action):
