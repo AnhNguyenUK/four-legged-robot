@@ -185,8 +185,8 @@ class RobotLeg2Joint(RobotDogFreeNove):
 if __name__ == "__main__":
     robot = RobotDogFreeNove()
     pilot = Servo()
-    cmd = sys.argv[1]
-    params = int(sys.argv[2])
+    # cmd = sys.argv[1]
+    # params = int(sys.argv[2])
     robot.doAction(pilot, "STANDING")
 
     pass
