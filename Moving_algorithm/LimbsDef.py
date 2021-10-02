@@ -95,16 +95,16 @@ class RobotDogFreeNove:
     def controlServo(self, partToMove, pilot):
         while(True):
             for index in range(4):        
-                if(index > 2):
+                if(index >= 2):
                     minimum_dis = -self.minimuDisplacement
                 else:
                     minimum_dis = self.minimuDisplacement
                 
                 if(partToMove == "HIP"):
-                    if (self.current_position["HIP"][index] > self.hipMovementAngularVector[index]):
+                    if (self.current_position["HIP"][index] != self.hipMovementAngularVector[index]):
                         self.current_position["HIP"][index] -= minimum_dis
-                    elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
-                        self.current_position["HIP"][index] += minimum_dis
+                    # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
+                    #     self.current_position["HIP"][index] += minimum_dis
                     else:    
                         self.current_position["HIP"][index] = self.hipMovementAngularVector[index]
 
@@ -112,7 +112,7 @@ class RobotDogFreeNove:
                         pilot.setServoAngle(self.hipJoint[index], 
                                             self.current_position["HIP"][index])
                     
-                    print("Hip Angle: ", self.current_position["HIP"][index])
+                    print("Hip Angle {}: ".format(str(index)), self.current_position["HIP"][index])
                     
                 if(partToMove == "FEMUR"):
                     if (self.current_position["FEMUR"][index] > self.femureMovementAngularVector[index]):
@@ -151,7 +151,7 @@ class RobotDogFreeNove:
         threadForHip.start()
         threadForTibia.start()
         threadForFemur.start()
-        time.sleep(1)
+        time.sleep(5)
         stop_thread(threadForHip)
         stop_thread(threadForFemur)
         stop_thread(threadForTibia)
