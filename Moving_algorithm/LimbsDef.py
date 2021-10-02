@@ -123,12 +123,12 @@ class RobotDogFreeNove:
             else:
                 minimum_dis = self.minimuDisplacement  
             
-            if (self.current_position["FEMUR"][index] != self.femureMovementAngularVector[index]):
+            if (self.current_position["FEMUR"][index] > self.femureMovementAngularVector[index]):
                 self.current_position["FEMUR"][index] -= minimum_dis
-
+            elif (self.current_position["FEMUR"][index] < self.femureMovementAngularVector[index]):
+                self.current_position["FEMUR"][index] += minimum_dis
             else:    
                 self.current_position["FEMUR"][index] = self.femureMovementAngularVector[index]
-                return "Done"
 
             if distro_ID == "Raspbian":
                 pilot.setServoAngle(self.femurJoint[index], 
@@ -144,13 +144,12 @@ class RobotDogFreeNove:
             else:
                 minimum_dis = self.minimuDisplacement            
                 
-            if (self.current_position["TIBIA"][index] != self.tibiaMovementAngularVector[index]):
+            if (self.current_position["TIBIA"][index] > self.tibiaMovementAngularVector[index]):
                 self.current_position["TIBIA"][index] -= minimum_dis
-            # elif (self.current_position["HIP"][index] < self.hipMovementAngularVector[index]):
-            #     self.current_position["HIP"][index] += minimum_dis
+            elif (self.current_position["TIBIA"][index] < self.tibiaMovementAngularVector[index]):
+                self.current_position["TIBIA"][index] += minimum_dis
             else:    
                 self.current_position["TIBIA"][index] = self.tibiaMovementAngularVector[index]
-                return "Done"
 
             if distro_ID == "Raspbian":
                 pilot.setServoAngle(self.tibiaJoint[index], 
@@ -197,5 +196,15 @@ if __name__ == "__main__":
     # cmd = sys.argv[1]
     # params = int(sys.argv[2])
     robot.doAction(pilot, "STANDING")
-
+    print("Lukas is standing")
+    robot.doAction(pilot, "SITTING")
+    print("Lukas is sitting")
+    robot.doAction(pilot, "STANDING")
+    print("Lukas is standing")
+    robot.doAction(pilot, "SITTING")
+    print("Lukas is sitting")
+    robot.doAction(pilot, "STANDING")
+    print("Lukas is standing")
+    robot.doAction(pilot, "SITTING")
+    print("Lukas is sitting")
     pass
