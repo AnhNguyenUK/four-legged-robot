@@ -16,7 +16,7 @@ class Control:
         self.servo=Servo()
         self.pid = Incremental_PID(0.5,0.0,0.0025)
         self.speed = 8
-        self.height = 120
+        self.height = 99
         self.timeout = 0
         self.move_flag = 0
         self.move_count = 0
