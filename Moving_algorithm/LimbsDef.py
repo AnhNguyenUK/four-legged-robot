@@ -208,5 +208,9 @@ if __name__ == "__main__":
     c = Control()
     for i in range(60):
         c.forWard()
-    
+        print("Charlie steps forward")
+    c.stop()
+    print("Charlie stops")
+    c.relax()
+    print("Charlie is relax")
     pass

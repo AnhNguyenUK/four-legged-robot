@@ -98,7 +98,9 @@ def test_Buzzer():
     except KeyboardInterrupt:
         buzzer.run('0')
         print ("\nEnd of program")
-     
+
+def Test_servo_forward(action):
+
 # Main program logic follows:
 if __name__ == '__main__':
 
@@ -117,6 +119,9 @@ if __name__ == '__main__':
         test_Adc()  
     elif sys.argv[1] == 'Buzzer':   
         test_Buzzer() 
+    elif sys.argv[1] == 'TestServo':
+        pass
+
 
 
         
